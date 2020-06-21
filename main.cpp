@@ -267,9 +267,7 @@ int main(int argc, char** argv)
     while (!glfwWindowShouldClose(window) && game_running)
     {  
         buffer_clear(&buffer, clear_color);
-
-        cout << "here 1" << endl;
-
+        
         if(game.player.life == 0)
         {
             buffer_draw_text(&buffer, text_spritesheet, "GAME OVER", game.width / 2 - 30, game.height / 2, rgb_to_uint32(128, 0, 0));
@@ -288,8 +286,6 @@ int main(int argc, char** argv)
             glfwPollEvents();
             continue;
         }
-
-        cout << "here 2" << endl;
 
         buffer_draw_text(&buffer, text_spritesheet, "SCORE", 4, game.height - text_spritesheet.height - 7, rgb_to_uint32(128, 0, 0));
         buffer_draw_number(&buffer, number_spritesheet, score, 4 + 2 * number_spritesheet.width, game.height - 2 * number_spritesheet.height - 12, rgb_to_uint32(128, 0, 0));
@@ -311,8 +307,6 @@ int main(int argc, char** argv)
         {
             buffer.data[game.width * 16 + i] = rgb_to_uint32(128, 0, 0);
         }
-
-        cout << "here 3" << endl;
 
         for(size_t ai = 0; ai < game.num_aliens; ++ai)
         {

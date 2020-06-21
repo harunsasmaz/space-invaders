@@ -6,7 +6,7 @@ For simplicity and lack of resources, CPU rendering is used.
 
 To compile:
 
->g++ -Wall -std=c++11 -O0 -g -o main -lglfw -lglew -framework OpenGL main.cpp
+>make
 
 There are 6 alien types and 1 player type added under <shapes.h>. Please, feel free to update shapes and enjoy.
 
