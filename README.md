@@ -2,7 +2,28 @@
 
 A simple OpenGL-based Space Invaders game.
 
+![intro](intro.png "Start");
+![played](played.png "Middle")
+![gameover](gameover.png "End")
+
 For simplicity and lack of resources, CPU rendering is used.
+
+Enviroment:
+    - C++14
+    - g++ compiler
+
+Dependencies:
+    - glew
+    - glfw3
+
+To install dependencies:
+
+    - MacOS:
+        - brew install glfw3
+        - brew install glew
+    - Ubuntu:
+        - sudo apt-get install libglfw3 / sudo apt-get install libglfw3-dev
+        - sudo apt-get install libglew-dev
 
 To compile:
 
