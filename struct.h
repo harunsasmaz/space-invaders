@@ -81,17 +81,19 @@ void fill_alien_shapes(Sprite* sprites, int n)
     sprites->data = alien_shape_5;
 }
 
-void init_game(Game* game, size_t width, size_t height)
-{
-    game->width = width;
-    game->height = height;
-    game->num_bullets = 0;
-    game->num_aliens = 55;
-    game->aliens = new Alien[55];
+Game init_game(size_t width, size_t height)
+{   
+    Game game;
+    game.width = width;
+    game.height = height;
+    game.num_bullets = 0;
+    game.num_aliens = 55;
+    game.aliens = new Alien[55];
 
-    game->player.x = 112 - 5;
-    game->player.y = 32;
-    game->player.life = 3;
+    game.player.x = 112 - 5;
+    game.player.y = 32;
+    game.player.life = 3;
+    return game;
 }
 
 bool sprite_overlap_check(

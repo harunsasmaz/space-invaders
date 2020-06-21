@@ -69,7 +69,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 int main(int argc, char** argv)
 {   
-    const size_t buffer_width = 256;
+    const size_t buffer_width = 224;
     const size_t buffer_height = 256;
     glfwSetErrorCallback(error_callback);
     if(!glfwInit()) return -1;
@@ -80,7 +80,7 @@ int main(int argc, char** argv)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
     GLFWwindow* window;
-    window = glfwCreateWindow(480,480, "Space Invaders", NULL, NULL);
+    window = glfwCreateWindow(2 * buffer_width, 2 * buffer_height, "Space Invaders", NULL, NULL);
 
     if(!window)
     {
@@ -227,7 +227,7 @@ int main(int argc, char** argv)
     }
 
     Game game;
-    init_game(&game, buffer_width, buffer_height);
+    game = init_game(&game, buffer_width, buffer_height);
 
     size_t alien_swarm_position = 24;
     size_t alien_swarm_max_position = game.width - 16 * 11 - 3;
