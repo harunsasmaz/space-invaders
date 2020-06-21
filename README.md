@@ -8,11 +8,13 @@ A simple OpenGL-based Space Invaders game.
 
 For simplicity and lack of resources, CPU rendering is used.
 
-Enviroment:
+Environment:
+
     - C++14
     - g++ compiler
 
 Dependencies:
+
     - glew
     - glfw3
 
