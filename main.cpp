@@ -130,7 +130,6 @@ int main(int argc, char** argv)
 
     GLuint fullscreen_triangle_vao;
     glGenVertexArrays(1, &fullscreen_triangle_vao);
-    //glBindVertexArray(fullscreen_triangle_vao);
 
     GLuint shader_id = glCreateProgram();
 
@@ -252,24 +251,30 @@ int main(int argc, char** argv)
     }
 
     uint8_t* death_counters = new uint8_t[game.num_aliens];
-    std::fill(death_counters, death_counters + game.num_aliens, 10);
+    for(size_t i = 0; i < game.num_aliens; ++i)
+    {
+        death_counters[i] = 10;
+    }
 
     uint32_t clear_color = rgb_to_uint32(0, 128, 0);
     uint32_t rng = 13;
 
     int alien_move_dir = 4;
-    int player_move_dir = 0;
 
     size_t score = 0;
     size_t credits = 0;
+
     game_running = true;
 
+    int player_move_dir = 0;
     while (!glfwWindowShouldClose(window) && game_running)
-    {  
+    {
         buffer_clear(&buffer, clear_color);
-        
+
+
         if(game.player.life == 0)
         {
+
             buffer_draw_text(&buffer, text_spritesheet, "GAME OVER", game.width / 2 - 30, game.height / 2, rgb_to_uint32(128, 0, 0));
             buffer_draw_text(&buffer, text_spritesheet, "SCORE", 4, game.height - text_spritesheet.height - 7, rgb_to_uint32(128, 0, 0));
             buffer_draw_number(&buffer, number_spritesheet, score, 4 + 2 * number_spritesheet.width, game.height - 2 * number_spritesheet.height - 12, rgb_to_uint32(128, 0, 0));
@@ -287,16 +292,19 @@ int main(int argc, char** argv)
             continue;
         }
 
+        // Draw
         buffer_draw_text(&buffer, text_spritesheet, "SCORE", 4, game.height - text_spritesheet.height - 7, rgb_to_uint32(128, 0, 0));
         buffer_draw_number(&buffer, number_spritesheet, score, 4 + 2 * number_spritesheet.width, game.height - 2 * number_spritesheet.height - 12, rgb_to_uint32(128, 0, 0));
 
-        char credit_text[16];
-        sprintf(credit_text, "CREDIT %02lu", credits);
-        buffer_draw_text(&buffer, text_spritesheet, credit_text, 164, 7, rgb_to_uint32(128, 0, 0));
+        {
+            char credit_text[16];
+            sprintf(credit_text, "CREDIT %02lu", credits);
+            buffer_draw_text(&buffer, text_spritesheet, credit_text, 164, 7, rgb_to_uint32(128, 0, 0));
+        }
+
 
         buffer_draw_number(&buffer, number_spritesheet, game.player.life, 4, 7, rgb_to_uint32(128, 0, 0));
         size_t xp =  11 + number_spritesheet.width;
-
         for(size_t i = 0; i < game.player.life - 1; ++i)
         {
             buffer_draw_sprite(&buffer, player_sprite, xp, 7, rgb_to_uint32(128, 0, 0));
@@ -308,13 +316,14 @@ int main(int argc, char** argv)
             buffer.data[game.width * 16 + i] = rgb_to_uint32(128, 0, 0);
         }
 
+
         for(size_t ai = 0; ai < game.num_aliens; ++ai)
         {
             if(death_counters[ai] == 0) continue;
 
             const Alien& alien = game.aliens[ai];
             if(alien.type == ALIEN_DEAD)
-            {   
+            {
                 buffer_draw_sprite(&buffer, alien_death_sprite, alien.x, alien.y, rgb_to_uint32(128, 0, 0));
             }
             else
@@ -322,11 +331,9 @@ int main(int argc, char** argv)
                 const SpriteAnimation& animation = alien_animation[alien.type - 1];
                 size_t current_frame = animation.time / animation.frame_duration;
                 const Sprite& sprite = *animation.frames[current_frame];
-                buffer_draw_sprite(&buffer, sprite, alien.x, alien.y, rgb_to_uint32(128, 0, 0));
+                //buffer_draw_sprite(&buffer, sprite, alien.x, alien.y, rgb_to_uint32(128, 0, 0));
             }
         }
-
-        cout << "here 4" << endl;
 
         for(size_t bi = 0; bi < game.num_bullets; ++bi)
         {
@@ -341,8 +348,6 @@ int main(int argc, char** argv)
             buffer_draw_sprite(&buffer, *sprite, bullet.x, bullet.y, rgb_to_uint32(128, 0, 0));
         }
 
-        cout << "here 5" << endl;
-
         buffer_draw_sprite(&buffer, player_sprite, game.player.x, game.player.y, rgb_to_uint32(128, 0, 0));
 
         glTexSubImage2D(
@@ -354,8 +359,6 @@ int main(int argc, char** argv)
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
         glfwSwapBuffers(window);
-
-        cout << "here 6" << endl;
 
         // Simulate bullets
         for(size_t bi = 0; bi < game.num_bullets; ++bi)
@@ -381,10 +384,11 @@ int main(int argc, char** argv)
                     --game.player.life;
                     game.bullets[bi] = game.bullets[game.num_bullets - 1];
                     --game.num_bullets;
+                    //NOTE: The rest of the frame is still going to be simulated.
+                    //perhaps we need to check if the game is over or not.
                     break;
                 }
             }
-
             // Player bullet
             else
             {
@@ -437,6 +441,7 @@ int main(int argc, char** argv)
                     {
                         score += 10 * (4 - game.aliens[ai].type);
                         game.aliens[ai].type = ALIEN_DEAD;
+                        // NOTE: Hack to recenter death sprite
                         game.aliens[ai].x -= (alien_death_sprite.width - alien_sprite.width)/2;
                         game.bullets[bi] = game.bullets[game.num_bullets - 1];
                         --game.num_bullets;
@@ -599,7 +604,6 @@ int main(int argc, char** argv)
         fire_pressed = false;
 
         glfwPollEvents();
-
     }
 
     glfwDestroyWindow(window);

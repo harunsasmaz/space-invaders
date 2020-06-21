@@ -9,5 +9,6 @@ build: main.cpp
 	$(CC) -Wall $(CCFLAGS) -O0 -g -o $(OBJ) $(INCLUDES) -framework $(FRAMEWORK) main.cpp
 
 clean:
+	rm -r main.dSYM/
 	rm $(OBJ)
-	rm -rf main.dSYM
+	

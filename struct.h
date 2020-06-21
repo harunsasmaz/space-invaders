@@ -1,27 +1,27 @@
 #include "util.h"
 #include "shapes.h"
 
-typedef struct buffer{
+typedef struct Buffer{
     size_t width, height;
     uint32_t* data;
 }Buffer;
 
-typedef struct sprite{
+typedef struct Sprite{
     size_t width, height;
     uint8_t* data;
 }Sprite;
 
-typedef struct alien{
+typedef struct Alien{
     size_t x,y;
     uint8_t type;
 }Alien;
 
-typedef struct player{
+typedef struct Player{
     size_t x,y;
     size_t life;
 }Player;
 
-typedef struct bullet
+typedef struct Bullet
 {
     size_t x, y;
     int dir;
@@ -36,7 +36,7 @@ typedef struct Game{
     Bullet bullets[GAME_MAX_BULLETS];
 }Game;
 
-typedef struct spriteAnimation
+typedef struct SpriteAnimation
 {
     bool loop;
     size_t num_frames;
