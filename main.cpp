@@ -1,6 +1,8 @@
 #include "struct.h"
 #include "validate.h"
+#include "shapes.h"
 
+using namespace std;
 
 #define GL_ERROR_CASE(glerror)\
     case glerror: snprintf(error, sizeof(error), "%s", #glerror)
@@ -128,20 +130,13 @@ int main(int argc, char** argv)
 
     glBindVertexArray(fullscreen_triangle_vao);
 
-    Sprite alien_sprite;
-    alien_sprite.width = 11;
-    alien_sprite.height = 8;
-    alien_sprite.data = new uint8_t[88]
-    {
-        0,0,1,0,0,0,0,0,1,0,0, // ..@.....@..
-        0,0,0,1,0,0,0,1,0,0,0, // ...@...@...
-        0,0,1,1,1,1,1,1,1,0,0, // ..@@@@@@@..
-        0,1,1,0,1,1,1,0,1,1,0, // .@@.@@@.@@.
-        1,1,1,1,1,1,1,1,1,1,1, // @@@@@@@@@@@
-        1,0,1,1,1,1,1,1,1,0,1, // @.@@@@@@@.@
-        1,0,1,0,0,0,0,0,1,0,1, // @.@.....@.@
-        0,0,0,1,1,0,1,1,0,0,0  // ...@@.@@...
-    };
+    Sprite alien_sprites[6];
+    fill_alien_shapes(alien_sprites);
+
+    Sprite text_spreadsheet;
+    text_spreadsheet.width = 5;
+    text_spreadsheet.height = 7;
+    text_spreadsheet.data = text_spreadsheet_shape;
 
     uint32_t clear_color = rgb_to_uint32(0, 128, 0);
 

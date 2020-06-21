@@ -1,4 +1,4 @@
-
+#include "util.h"
 
 void validate_shader(GLuint shader, const char* file = 0)
 {
