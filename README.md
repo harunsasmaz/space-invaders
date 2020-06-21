@@ -2,9 +2,9 @@
 
 A simple OpenGL-based Space Invaders game.
 
-![intro](intro.png "Start");
-![played](played.png "Middle")
-![gameover](gameover.png "End")
+![intro](assets/intro.png =256x224);
+![played](assets/played.png =256x224)
+![gameover](assets/gameover.png =256x224)
 
 For simplicity and lack of resources, CPU rendering is used.
 
