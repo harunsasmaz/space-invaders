@@ -33,6 +33,27 @@ void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
+    switch(key){
+    case GLFW_KEY_ESCAPE:
+        if(action == GLFW_PRESS) game_running = false;
+        break;
+    case GLFW_KEY_RIGHT:
+        if(action == GLFW_PRESS) move_dir += 1;
+        else if(action == GLFW_RELEASE) move_dir -= 1;
+        break;
+    case GLFW_KEY_LEFT:
+        if(action == GLFW_PRESS) move_dir -= 1;
+        else if(action == GLFW_RELEASE) move_dir += 1;
+        break;
+    case GLFW_KEY_SPACE:
+        if(action == GLFW_RELEASE) fire_pressed = true;
+        break;
+    default:
+        break;
+    }
+}
+
 int main(int argc, char** argv)
 {   
     const size_t buffer_width = 256;
@@ -137,6 +158,15 @@ int main(int argc, char** argv)
     text_spreadsheet.width = 5;
     text_spreadsheet.height = 7;
     text_spreadsheet.data = text_spreadsheet_shape;
+
+    Sprite number_spritesheet = text_spritesheet;
+    number_spritesheet.data += 16 * 35;
+
+    Sprite alien_bullet_sprite[2];
+    alien_bullet_sprite[0].width = alien_bullet_sprite[1].width = 3;
+    alien_bullet_sprite[0].height = alien_bullet_sprite[1].height = 7;
+    alien_bullet_sprite[0].data = alien_bullet_0;
+    alien_bullet_sprite[1].data = alien_bullet_1;
 
     uint32_t clear_color = rgb_to_uint32(0, 128, 0);
 

@@ -180,6 +180,8 @@ uint8_t* alien_bullet_1 = new uint8_t[21]
     0,1,0,0,0,1,0,1,0,1,0,0,0,1,0,0,0,1,0,1,0,
 };
 
+uint8_t* alien_bullets[2] = {alien_bullet_0, alien_bullet_1};
+
 uint8_t* player_bullet = new uint8_t[3]
 {
     1, 1, 1
