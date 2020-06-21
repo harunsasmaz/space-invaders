@@ -1,7 +1,4 @@
 #include "stdc++.h"
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 
 #define GAME_MAX_BULLETS 128
 
@@ -25,7 +22,21 @@ double random(uint32_t* rng)
     return (double)xorshift32(rng) / std::numeric_limits<uint32_t>::max();
 }
 
-const char* vertex_shader =
+// Create shader for displaying buffer
+static const char* fragment_shader =
+    "\n"
+    "#version 330\n"
+    "\n"
+    "uniform sampler2D buffer;\n"
+    "noperspective in vec2 TexCoord;\n"
+    "\n"
+    "out vec3 outColor;\n"
+    "\n"
+    "void main(void){\n"
+    "    outColor = texture(buffer, TexCoord).rgb;\n"
+    "}\n";
+
+static const char* vertex_shader =
     "\n"
     "#version 330\n"
     "\n"
@@ -37,17 +48,4 @@ const char* vertex_shader =
     "    TexCoord.y = (gl_VertexID == 1)? 2.0: 0.0;\n"
     "    \n"
     "    gl_Position = vec4(2.0 * TexCoord - 1.0, 0.0, 1.0);\n"
-    "}\n";
-
-const char* fragment_shader =
-    "\n"
-    "#version 330\n"
-    "\n"
-    "uniform sampler2D buffer;\n"
-    "noperspective in vec2 TexCoord;\n"
-    "\n"
-    "out vec3 outColor;\n"
-    "\n"
-    "void main(void){\n"
-    "    outColor = texture(buffer, TexCoord).rgb;\n"
     "}\n";

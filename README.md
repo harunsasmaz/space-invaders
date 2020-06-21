@@ -8,6 +8,10 @@ To compile:
 
 >make
 
+Play:
+
+&#8592; slide left, &#8594; slide right and <kbd>Space</kbd> for fire lasers.
+
 There are 6 alien types and 1 player type added under <shapes.h>. Please, feel free to update shapes and enjoy.
 
 You can change window size by changing values <buffer_width> and <buffer_height> in "main" function.

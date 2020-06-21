@@ -1,3 +1,6 @@
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 void validate_shader(GLuint shader, const char* file = 0)
 {
     static const unsigned int BUFFER_SIZE = 512;
