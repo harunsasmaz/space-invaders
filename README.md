@@ -10,7 +10,7 @@ To compile:
 
 Play:
 
-&#8592; slide left, &#8594; slide right and <kbd>Space</kbd> for fire lasers.
+><kbd>Left</kbd> slide left, <kbd>Right</kbd> slide right and <kbd>Space</kbd> for fire lasers.
 
 There are 6 alien types and 1 player type added under <shapes.h>. Please, feel free to update shapes and enjoy.
 
