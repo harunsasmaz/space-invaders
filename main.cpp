@@ -1,8 +1,11 @@
 #include "struct.h"
 #include "validate.h"
-#include "shapes.h"
 
 using namespace std;
+
+bool game_running = false;
+int move_dir = 0;
+bool fire_pressed = 0;
 
 #define GL_ERROR_CASE(glerror)\
     case glerror: snprintf(error, sizeof(error), "%s", #glerror)
@@ -152,12 +155,22 @@ int main(int argc, char** argv)
     glBindVertexArray(fullscreen_triangle_vao);
 
     Sprite alien_sprites[6];
-    fill_alien_shapes(alien_sprites);
+    fill_alien_shapes(alien_sprites, 6);
 
-    Sprite text_spreadsheet;
-    text_spreadsheet.width = 5;
-    text_spreadsheet.height = 7;
-    text_spreadsheet.data = text_spreadsheet_shape;
+    Sprite alien_death_sprite;
+    alien_death_sprite.width = 13;
+    alien_death_sprite.height = 7;
+    alien_death_sprite.data = alien_death;
+
+    Sprite player_sprite;
+    player_sprite.width = 11;
+    player_sprite.height = 7;
+    player_sprite.data = player_shape;
+
+    Sprite text_spritesheet;
+    text_spritesheet.width = 5;
+    text_spritesheet.height = 7;
+    text_spritesheet.data = text_spreadsheet_shape;
 
     Sprite number_spritesheet = text_spritesheet;
     number_spritesheet.data += 16 * 35;
@@ -168,23 +181,63 @@ int main(int argc, char** argv)
     alien_bullet_sprite[0].data = alien_bullet_0;
     alien_bullet_sprite[1].data = alien_bullet_1;
 
-    uint32_t clear_color = rgb_to_uint32(0, 128, 0);
+    SpriteAnimation alien_animation[3];
 
-    while (!glfwWindowShouldClose(window))
+    size_t alien_update_frequency = 120;
+
+    for(size_t i = 0; i < 3; ++i)
+    {
+        alien_animation[i].loop = true;
+        alien_animation[i].num_frames = 2;
+        alien_animation[i].frame_duration = alien_update_frequency;
+        alien_animation[i].time = 0;
+
+        alien_animation[i].frames = new Sprite*[2];
+        alien_animation[i].frames[0] = &alien_sprites[2 * i];
+        alien_animation[i].frames[1] = &alien_sprites[2 * i + 1];
+    }
+
+    Game game;
+    init_game(&game, buffer_width, buffer_height);
+
+    size_t alien_swarm_position = 24;
+    size_t alien_swarm_max_position = game.width - 16 * 11 - 3;
+
+    size_t aliens_killed = 0;
+    size_t alien_update_timer = 0;
+    bool should_change_speed = false;
+
+    for(size_t xi = 0; xi < 11; ++xi)
+    {
+        for(size_t yi = 0; yi < 5; ++yi)
+        {
+            Alien& alien = game.aliens[xi * 5 + yi];
+            alien.type = (5 - yi) / 2 + 1;
+
+            const Sprite& sprite = alien_sprites[2 * (alien.type - 1)];
+
+            alien.x = 16 * xi + alien_swarm_position + (alien_death_sprite.width - sprite.width)/2;
+            alien.y = 17 * yi + 128;
+        }
+    }
+
+    uint8_t* death_counters = new uint8_t[game.num_aliens];
+    std::fill(death_counters, death_counters + game.num_aliens, 10);
+
+    uint32_t clear_color = rgb_to_uint32(0, 128, 0);
+    uint32_t rng = 13;
+
+    int alien_move_dir = 4;
+    int player_move_dir = 0;
+
+    size_t score = 0;
+    size_t credits = 0;
+    game_running = true;
+
+    while (!glfwWindowShouldClose(window) && game_running)
     {
         buffer_clear(&buffer, clear_color);
-        buffer_sprite_draw(&buffer, alien_sprite, 112,118, rgb_to_uint32(128, 0, 0));
 
-        glTexSubImage2D(
-            GL_TEXTURE_2D, 0, 0, 0,
-            buffer.width, buffer.height,
-            GL_RGBA, GL_UNSIGNED_INT_8_8_8_8,
-            buffer.data
-        );
-
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        glfwSwapBuffers(window);
-        glfwPollEvents();
     }
 
     glfwDestroyWindow(window);

@@ -2,9 +2,27 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+
+#define GAME_MAX_BULLETS 128
+
 uint32_t rgb_to_uint32(uint8_t r, uint8_t g, uint8_t b)
 {
     return (r << 24) | (g << 16) | (b << 8) | 255;
+}
+
+uint32_t xorshift32(uint32_t* rng)
+{
+    uint32_t x = *rng;
+    x ^= x << 13;
+    x ^= x >> 17;
+    x ^= x << 5;
+    *rng = x;
+    return x;
+}
+
+double random(uint32_t* rng)
+{
+    return (double)xorshift32(rng) / std::numeric_limits<uint32_t>::max();
 }
 
 const char* vertex_shader =

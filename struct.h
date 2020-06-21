@@ -21,11 +21,19 @@ typedef struct player{
     size_t life;
 }Player;
 
-typedef struct game{
+typedef struct bullet
+{
+    size_t x, y;
+    int dir;
+}Bullet;
+
+typedef struct Game{
     size_t width, height;
     int num_aliens;
+    int num_bullets;
     Alien* aliens;
     Player player;
+    Bullet bullets[GAME_MAX_BULLETS];
 }Game;
 
 typedef struct spriteAnimation
@@ -89,4 +97,17 @@ void fill_alien_shapes(Sprite* sprites, int n)
     sprites[5].height = 8;
     sprites[5].width = 12;
     sprites->data = alien_shape_5;
+}
+
+void init_game(Game* game, size_t width, size_t height)
+{
+    game->width = width;
+    game->height = height;
+    game->num_bullets = 0;
+    game->num_aliens = 55;
+    game->aliens = new Alien[55];
+
+    game->player.x = 112 - 5;
+    game->player.y = 32;
+    game->player.life = 3;
 }
