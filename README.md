@@ -31,15 +31,20 @@ To install dependencies:
 
 To compile:
 
->make
-
+```bash
+$ make
+```
 Play:
 
-><kbd>Left</kbd> slide left, <kbd>Right</kbd> slide right and <kbd>Space</kbd> for fire lasers.
+| Key  | Action |
+| ------------- | ------------- |
+| <kbd>Left</kbd>  | Slide left  |
+| <kbd>Right</kbd>  | Slide right  |
+| <kbd>Space</kbd>  | Fire laser |
 
-There are 6 alien types and 1 player type added under <shapes.h>. Please, feel free to update shapes and enjoy.
+* There are 6 alien types and 1 player type added under <code>shapes.h</code>. Please, feel free to update shapes and enjoy.
 
-You can change window size by changing values <buffer_width> and <buffer_height> in "main" function.
+* You can change window size by changing values <code>buffer_width</code> and <code>buffer_height</code> in "main" function.
 
 ## Acknowledgements
 
